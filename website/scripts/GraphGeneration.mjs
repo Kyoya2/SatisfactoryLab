@@ -1,7 +1,7 @@
 import game_data from "@/GameData/GameData.mjs";
 import {assert, any, all, reduce, map, formatFrac} from "@/Utils.mjs";
 import {Graph, Node, Edge} from "@/Graph.mjs";
-import {g_, SCNode} from "@/Common.mjs";
+import {g_, SLNode} from "@/Common.mjs";
 
 /** @import { GameObjectId, Recipe, CraftingObject } from "@/GameData/GameData.mjs" */
 /** @import { MyEdgeInfo } from "@/Common.mjs" */
@@ -11,7 +11,7 @@ import {fraction, Fraction} from 'mathjs';
 
 /**
  * Calculates the fraction values for non-byproduct edges of a given node
- * @param {Node<SCNode, MyEdgeInfo>} node
+ * @param {Node<SLNode, MyEdgeInfo>} node
  */
 function calculateOutputFractions(node) {
     for (const [target_node, data] of node.flinks()) {
@@ -28,13 +28,13 @@ function calculateOutputFractions(node) {
  * The graph mainly describes relationships between different ingredients, and doesn't
  * hold other information.
  * @param {CraftingObject} product
- * @returns {Node<SCNode, MyEdgeInfo>} The product node
+ * @returns {Node<SLNode, MyEdgeInfo>} The product node
  */
 function generateBaseGraph(product) {
-    /** @type {Graph<SCNode, MyEdgeInfo>} */
+    /** @type {Graph<SLNode, MyEdgeInfo>} */
     let graph = new Graph(((edge) => !edge.data.is_byproduct));
 
-    /** @type {Map<GameObjectId, Node<SCNode, MyEdgeInfo>>} */
+    /** @type {Map<GameObjectId, Node<SLNode, MyEdgeInfo>>} */
     let nodes = new Map();
 
     // byproducts[id1] -> A map containing all nodes that produce "id1" as a byproduct.
@@ -45,7 +45,7 @@ function generateBaseGraph(product) {
     /**
      * Calculates only the layout of the graph for the currently selected product
      * @param {CraftingObject} product
-     * @returns {Node<SCNode, MyEdgeInfo>}
+     * @returns {Node<SLNode, MyEdgeInfo>}
      */
     function _generateGraphLayout(product) {
         let node = nodes.get(product.id);
@@ -64,7 +64,7 @@ function generateBaseGraph(product) {
             }
         }
 
-        node = graph.createNode(new SCNode(product, false));
+        node = graph.createNode(new SLNode(product, false));
 
         nodes.set(product.id, node)
 
@@ -115,7 +115,7 @@ function generateBaseGraph(product) {
         // If the byproduct is not used anywhere in the recipe tree, create a node for it
         let byproduct_node = nodes.get(byproduct_id);
         if (undefined === byproduct_node) {
-            byproduct_node = graph.createNode(new SCNode(game_data.crafting_objects[byproduct_id], true));
+            byproduct_node = graph.createNode(new SLNode(game_data.crafting_objects[byproduct_id], true));
         }
 
         // Connect the byproduct node to all the nodes that produce it
@@ -140,7 +140,7 @@ function generateBaseGraph(product) {
 /**
  * Calculates optimal production rates for nodes in the given graph.
  * Doesn't take byproducts into consideration.
- * @param {Node<SCNode, MyEdgeInfo>} product_node
+ * @param {Node<SLNode, MyEdgeInfo>} product_node
  */
 function calculateGraphProductionRates(product_node) {
     // Set the required production to the production of one machine
@@ -178,14 +178,14 @@ function calculateGraphProductionRates(product_node) {
 
 /**
  * Adjusts the existing production rates of nodes in the graph according to byproducts.
- * @param {Node<SCNode, MyEdgeInfo>} product_node 
+ * @param {Node<SLNode, MyEdgeInfo>} product_node 
  */
 function calculateGraphByproducts(product_node) {
     /**
      * Updates the "production_required" field of the current node to the given value, and propagates
      * the change upwards.
      * Does not modify byproducts, this will be handled by "_updateByproduct".
-     * @param {Node<SCNode, MyEdgeInfo>} target_node 
+     * @param {Node<SLNode, MyEdgeInfo>} target_node 
      * @param {Fraction} new_production_required
      * @param {boolean} remove_if_zero - Whether nodes whose new production evaluates to 0 should be removed.
      * @returns {boolean} - Whether the production of the given node was changed
@@ -242,7 +242,7 @@ function calculateGraphByproducts(product_node) {
     }
 
     /**
-     * @param {Node<SCNode, MyEdgeInfo>} source_node
+     * @param {Node<SLNode, MyEdgeInfo>} source_node
      * @param {boolean} remove_if_zero - Whether nodes whose new production evaluates to 0 should be removed.
      * @param {boolean} force_byproduct - Force evaluating the node as a byproduct node, even if it's no longer
      *  a byproduct. Set to "true" if the node used to be a byproduct, but no longer may be.
@@ -335,7 +335,7 @@ function calculateGraphByproducts(product_node) {
 
     /**
      * Fixes negative production values caused by over-producing certain items from byproducts
-     * @param {Node<SCNode, MyEdgeInfo>} node
+     * @param {Node<SLNode, MyEdgeInfo>} node
      * @returns {boolean}
      */
     function _fixNegatives(node) {
@@ -427,7 +427,7 @@ function calculateGraphByproducts(product_node) {
 
 /**
  * @param {CraftingObject} product 
- * @returns {Node<SCNode, MyEdgeInfo>}
+ * @returns {Node<SLNode, MyEdgeInfo>}
  */
 export default function generateGraphData(product) {
     const product_node = generateBaseGraph(product);

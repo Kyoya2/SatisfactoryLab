@@ -8,7 +8,7 @@
 import game_data from "@/GameData/GameData.mjs";
 import {assert, any, reduce, map, formatFrac, parseFrac} from "@/Utils.mjs";
 import {Graph, Node, Edge} from "@/Graph.mjs";
-import {g_, SCNode} from "@/Common.mjs";
+import {g_, SLNode} from "@/Common.mjs";
 import generateGraphData from "@/GraphGeneration.mjs";
 import Config from "@/Config.mjs";
 
@@ -34,7 +34,7 @@ import {fraction, Fraction} from 'mathjs';
 
 /**
  * Returns the number of "lines" that should be reserved for a node overlay
- * @param {SCNode} node 
+ * @param {SLNode} node 
  * @returns {number}
  */
 function estimateNodeOverlayHeight(node) {
@@ -61,9 +61,9 @@ function estimateNodeOverlayHeight(node) {
 }
 
 /**
- * @param {Graph<SCNode, MyEdgeInfo>} graph 
+ * @param {Graph<SLNode, MyEdgeInfo>} graph 
  * @param {number} stroke_width - stoke width in pixels
- * @returns {[string, Node<SCNode, MyEdgeInfo>[], Edge<SCNode, MyEdgeInfo>[]]}
+ * @returns {[string, Node<SLNode, MyEdgeInfo>[], Edge<SLNode, MyEdgeInfo>[]]}
  */
 function toMermaid(graph, stroke_width) {
     let ordered_nodes = [...graph.nodes()];
@@ -164,7 +164,7 @@ function initEditableMultiplierLabel(editable_multiplier_label) {
 
 /**
  * @param {SVGGElement} node_svg_element 
- * @param {Node<SCNode, MyEdgeInfo>} node
+ * @param {Node<SLNode, MyEdgeInfo>} node
  */
 function createNodeOverlay(node_svg_element, node) {
     // Clone the template
@@ -256,7 +256,7 @@ function createNodeOverlay(node_svg_element, node) {
 /**
  * @param {SVGForeignObjectElement} edge_label_element 
  * @param {SVGPathElement} edge_path_element 
- * @param {Edge<SCNode, MyEdgeInfo>} edge
+ * @param {Edge<SLNode, MyEdgeInfo>} edge
  */
 function createEdgeOverlay(edge_label_element, edge_path_element, edge) {
     edge.data.path_element = edge_path_element;
@@ -279,7 +279,7 @@ function createEdgeOverlay(edge_label_element, edge_path_element, edge) {
 
 /**
  * Generates the UI for the given graph
- * @param {Graph<SCNode, MyEdgeInfo>} graph
+ * @param {Graph<SLNode, MyEdgeInfo>} graph
  * @param {boolean} recalc_mult - Whether the display multiplier should be recalculated
  */
 async function generateGraphUI(graph, recalc_mult) {
@@ -330,7 +330,7 @@ async function generateGraphUI(graph, recalc_mult) {
 
 /**
  * 
- * @param {Graph<SCNode, MyEdgeInfo>} graph
+ * @param {Graph<SLNode, MyEdgeInfo>} graph
  * @returns {BuildingsInfo}
  */
 function generateBuildingsInfo(graph) {

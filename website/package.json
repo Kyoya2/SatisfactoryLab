@@ -1,14 +1,14 @@
 {
-  "name": "satisfactory-calculator",
+  "name": "satisfactory-lab",
   "version": "1.0.0",
   "description": "",
-  "homepage": "https://github.com/Kyoya2/SatisfactoryCalculator#readme",
+  "homepage": "https://github.com/Kyoya2/SatisfactoryLab#readme",
   "bugs": {
-    "url": "https://github.com/Kyoya2/SatisfactoryCalculator/issues"
+    "url": "https://github.com/Kyoya2/SatisfactoryLab/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Kyoya2/SatisfactoryCalculator.git"
+    "url": "git+https://github.com/Kyoya2/SatisfactoryLab.git"
   },
   "license": "ISC",
   "author": "Kyoya2",

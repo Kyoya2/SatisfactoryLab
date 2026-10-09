@@ -17,18 +17,18 @@ import {fraction, Fraction} from 'mathjs';
  * @property {HTMLDivElement} html - The overlay tof the edge's label container
  */
 
-/** @typedef {Map<Building, Set<SCNode>>} BuildingsInfo */
+/** @typedef {Map<Building, Set<SLNode>>} BuildingsInfo */
 /**
- * @typedef {Object} SCGlobals
+ * @typedef {Object} SLGlobals
  * @property {Object.<string, HTMLElement>} html_elements - Frequently accessed HTML elements mapped by their IDs
- * @property {Node<SCNode, MyEdgeInfo>} product_node - The node object of the current graph's product
+ * @property {Node<SLNode, MyEdgeInfo>} product_node - The node object of the current graph's product
  * @property {BuildingsInfo} buildings_info - Maps between a building and all crafting objects
  *  in the current graph that use it.
  * @property {Config} config - Settings that are saved in the URL
  * @property {PanzoomObject} panzoom - Graph Panzoom object
  */
 
-/** @type {SCGlobals} */
+/** @type {SLGlobals} */
 export var g_ = {
     html_elements: Object.create(null),
     product_node: null,
@@ -38,10 +38,10 @@ export var g_ = {
 };
 
 // For debugging
-globalThis.satisfactoryCalculator = g_;
+globalThis.satisfactoryLab = g_;
 
 
-export class SCNode {
+export class SLNode {
     /**
      * @param {CraftingObject} obj 
      * @param {boolean} is_pure_byproduct 
